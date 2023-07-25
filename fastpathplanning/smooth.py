@@ -108,13 +108,17 @@ class CompositeBezierCurve:
 
     def find_segment(self, t):
 
-        return min(bisect(self.transition_times, t) - 1, self.N - 1)
+        return np.minimum(
+            np.searchsorted(self.transition_times, t, "right") - 1, self.N - 1
+        )
 
     def __call__(self, t):
 
-        i = self.find_segment(t)
-
-        return self.beziers[i](t)
+        seg_map = self.find_segment(t)
+        evals = []
+        for i in range(self.N):
+            evals.append(self.beziers[i](t[seg_map == i]))
+        return np.row_stack(evals)
 
     def start_point(self):
 
