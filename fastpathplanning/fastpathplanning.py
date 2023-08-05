@@ -49,6 +49,6 @@ def plan(S, p_init, p_term, T, alpha, der_init={}, der_term={}, verbose=True):
     durations = np.linalg.norm(traj[1:] - traj[:-1], axis=1)
     durations *= T / sum(durations)
 
-    path, sol_stats = optimize_bezier_with_retiming(L, U, durations, alpha, initial, final, verbose=True)
+    path, sol_stats = optimize_bezier_with_retiming(L, U, durations, alpha, initial, final, verbose=verbose)
 
     return path
